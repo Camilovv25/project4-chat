@@ -5,7 +5,8 @@ const participantsModel = require('./participants.models')
 const Messages = db.define('Messages', {
   id: {
     type: DataTypes.UUID,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   },
   content: {
     type: DataTypes.STRING,
@@ -20,7 +21,7 @@ const Messages = db.define('Messages', {
     }
   },
   status:{
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.STRING,
     defaultValue: 'sent'
   }
 })

@@ -12,29 +12,18 @@ app.use(express.json());
 
 db.authenticate()
   .then(()=>{
-    responseHandlers.success({
-      message: 'Database authenticated successfully'
-    })}
-    
-  )
-  .catch(err => {
-    responseHandlers.error({
-      data: err,
-      message: 'An error occurred with the database autentication'
+    console.log('Database authenticated successfully')
     })
+  .catch(err => {
+    console.log(err)
   })
 
 db.sync()
   .then(()=>{
-    responseHandlers.success({
-      message: 'Database synced successfully'
-    })
+    console.log('Database synced successfully')
   })
   .catch(err => {
-    responseHandlers.error({
-      data: err,
-      message: 'An error occurred with the database synchronization'
-    })
+    console.log(err)
   })
 
 initModels()

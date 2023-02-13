@@ -5,7 +5,8 @@ const Conversations = db.define('Conversations', {
   id:{
     type: DataTypes.UUID,
     allowNull: false,
-    unique: true
+    unique: true,
+    primaryKey: true
   },
   profileImage: {
     type: DataTypes.STRING
