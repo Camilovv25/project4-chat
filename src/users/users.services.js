@@ -7,6 +7,7 @@ const getAllUsers = (req,res) =>{
       handleResponses.success({
         res,
         data,
+        status: 200,
         message: 'All users collected successfully',
       })
     })
@@ -15,7 +16,10 @@ const getAllUsers = (req,res) =>{
         res,
         data: error,
         status: 400,
-        message: 'An error accurred while getting all users'
+        message: 'An error accurred while getting all users',
+        fields: {
+          "URL" : "http://localhost:9000/api/v1/users"
+        }
       })
     })
 }
@@ -35,7 +39,7 @@ const getUserById = (req,res) => {
         handleResponses.error({
           res,
           status: 404,
-          message: 'User not found'
+          message: `User with id ${data.id} not found`
         })
       }
     })
@@ -65,16 +69,27 @@ const postUser = (req, res) => {
         res,
         data: error,
         status: 400,
-        message: 'An error accurred while creating a user'
+        message: 'An error accurred while creating a user',
+        fields: {
+          "id": "uuid.v4()",
+          "firstName": "string",
+          "lastName": "string",
+          "email": "string",
+          "password": "string",
+          "profileImage": "string",
+          "isActive": "boolean",
+          "phone": "string"
+        }
       })
     })
 }
 
 const patchUser = (req, res) => {
   const id = req.params.id
-  const userOBj = req.body 
-  usersControllers.updateUser(id, userOBj)
-    .then((data, userObj) => {
+  const userObj = req.body 
+  if (userObj.id || userObj.firstName || userObj.lastName || userObj.email || userObj.password || userObj.profileImage || userObj.isActive || userObj.phone){
+    usersControllers.updateUser(id, userObj)
+    .then((data) => {
       if(data){
         handleResponses.success({
           res,
@@ -82,19 +97,12 @@ const patchUser = (req, res) => {
           status: 200,
           message: `User with id ${data.id} has been updated`
         })
-      } else if(!userObj){
-        handleResponses.error({
-          res,
-          data,
-          status: 400,
-          message: 'No changes indicated'
-        })
-      }else {
+      } else {
         handleResponses.error({
           res,
           data,
           status: 404,
-          message: 'User not found'
+          message: `User with id ${data.id} not found`
         })
       }
     })
@@ -103,9 +111,20 @@ const patchUser = (req, res) => {
         res,
         data: error,
         status: 400,
-        message: 'An error accurred while updating the user'
+        message: 'An error accurred while updating the user',
+        fields: {
+          "id": "uuid.v4()",
+          "firstName": "string",
+          "lastName": "string",
+          "email": "string",
+          "password": "string",
+          "profileImage": "string",
+          "isActive": "boolean",
+          "phone": "string"
+        }
       })
     })
+  }
 }
 
 const deleteUser = (req, res) => {
@@ -117,14 +136,14 @@ const deleteUser = (req, res) => {
           res,
           data,
           status: 200,
-          message: 'The user has been deleted'
+          message: `The user with id ${data.id} has been deleted`
         })
       } else {
         handleResponses.error({
           res,
           data,
           status: 404,
-          message: 'User not found'
+          message: `User with id ${data.id} not found`
         })
       }
     })
@@ -137,6 +156,7 @@ const deleteUser = (req, res) => {
       })
     })
 }
+
 
 module.exports = {
   getAllUsers,

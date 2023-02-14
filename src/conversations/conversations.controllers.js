@@ -1,6 +1,6 @@
 
 const Conversations = require('../models/conversations.models')
-
+const uuid = require('uuid')
 const findAllConversations = async() => {
   const data = await Conversations.findAll();
   return data
@@ -15,10 +15,10 @@ const findConversationById = async (id) => {
 
 const createNewConversation = async (conversationOBj) => {
   const newConversation = {
-    id: conversationOBj.id,
+    id: uuid.v4(),
     profileImg: conversationOBj.profileImg,
     name: conversationOBj.name,
-    createdBy: conversationOBj.createdBy,
+    //createdBy: conversationOBj.createdBy,
     isGroup: conversationOBj.isGroup
   }
   const data = await Conversations.create(newConversation)

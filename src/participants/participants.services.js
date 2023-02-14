@@ -7,6 +7,7 @@ const getAllParticipants = (req,res) =>{
       handleResponses.success({
         res,
         data,
+        status: 200,
         message: 'All participants collected successfully',
       })
     })
@@ -15,7 +16,11 @@ const getAllParticipants = (req,res) =>{
         res,
         data: error,
         status: 400,
-        message: 'An error accurred while getting all participants'
+        message: 'An error accurred while getting all participants',
+        fields: {
+          "URL" : "http://localhost:9000/api/v1/participants"
+        },
+
       })
     })
 }
@@ -35,7 +40,7 @@ const getParticipantById = (req,res) => {
         handleResponses.error({
           res,
           status: 404,
-          message: 'Participant not found'
+          message: `Participant with id ${data.id} not found`
         })
       }
     })
@@ -65,47 +70,54 @@ const postParticipant = (req, res) => {
         res,
         data: error,
         status: 400,
-        message: 'An error accurred while creating a participant'
+        message: 'An error accurred while creating a participant',
+        fields: {
+          "id": "uuid.v4()",
+          "userId": "uuid.v4()",
+          "conversationId": "uuid.v4()",
+          "isAdmin": "boolean"
+        }
       })
     })
 }
 
 const patchParticipant = (req, res) => {
   const id = req.params.id
-  const participantOBj = req.body 
-  participantsControllers.updateParticipant(id, participantOBj)
-    .then((data, participantObj) => {
-      if(data){
-        handleResponses.success({
-          res,
-          data,
-          status: 200,
-          message: `Participant with id ${data.id} has been updated`
-        })
-      } else if(!participantObj){
-        handleResponses.error({
-          res,
-          data,
-          status: 400,
-          message: 'No changes indicated'
-        })
-      }else {
-        handleResponses.error({
-          res,
-          data,
-          status: 404,
-          message: 'Participant not found'
-        })
-      }
-    })
-    .catch(error => {
-      handleResponses.error({
-        res,
-        data: error,
-        status: 400,
-        message: 'An error accurred while updating the participant'
+  const participantObj = req.body 
+  if (participantObj.id || participantOBj.userId || participantOBj.conversationId|| participantOBj.isAdmin){
+    participantsControllers.updateParticipant(id, participantObj)
+      .then((data) => {
+        if(data){
+          handleResponses.success({
+            res,
+            data,
+            status: 200,
+            message: `Participant with id ${data.id} has been updated`
+          })
+        }else {
+          handleResponses.error({
+            res,
+            data,
+            status: 404,
+            message: `Participant with id ${data.id} not found`
+          })
+        }
       })
-    })
+      .catch(error => {
+        handleResponses.error({
+          res,
+          data: error,
+          status: 400,
+          message: 'An error accurred while updating the participant',
+          fields: {
+            "id": "uuid.v4()",
+            "userId": "uuid.v4()",
+            "conversationId": "uuid.v4()",
+            "isAdmin": "boolean"
+          }
+        })
+      })
+  }
 }
 
 const deleteParticipant = (req, res) => {
@@ -117,14 +129,14 @@ const deleteParticipant = (req, res) => {
           res,
           data,
           status: 200,
-          message: 'The participant has been deleted'
+          message: `The participant with id ${data.id} has been deleted`
         })
       } else {
         handleResponses.error({
           res,
           data,
           status: 404,
-          message: 'Participant not found'
+          message: `Participant with id ${data.id} not found`
         })
       }
     })

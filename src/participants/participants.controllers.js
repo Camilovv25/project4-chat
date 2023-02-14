@@ -1,5 +1,5 @@
 const Participants = require('../models/participants.models')
-
+const uuid = require('uuid')
 const findAllParticipants = async() => {
   const data = await Participants.findAll();
   return data
@@ -14,11 +14,10 @@ const findParticipantById = async (id) => {
 
 const createNewParticipant = async (participantOBj) => {
   const newParticipant = {
-    id: participantOBj.id,
-    profileImg: participantOBj.profileImg,
-    name: participantOBj.name,
-    createdBy: participantOBj.createdBy,
-    isGroup: participantOBj.isGroup
+    id: uuid.v4(),
+    userId: participantOBj.userId,
+    conversationId: participantOBj.conversationId,
+    isAdmin: participantOBj.isAdmin
   }
   const data = await Participants.create(newParticipant)
   return data 

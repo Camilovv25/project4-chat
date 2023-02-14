@@ -15,10 +15,10 @@ const Conversations = db.define('Conversations', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  createdBy: {
-    type: DataTypes.UUID,
-    allowNull: false
-  },
+  // createdBy: {
+  //   type: DataTypes.UUID,
+  //   allowNull: false
+  // },
   isGroup:{
     type: DataTypes.BOOLEAN,
     defaultValue: false

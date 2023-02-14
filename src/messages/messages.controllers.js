@@ -1,5 +1,5 @@
 const Messages = require('../models/messages.models')
-
+const uuid = require('uuid')
 const findAllMessages = async() => {
   const data = await Messages.findAll();
   return data
@@ -14,11 +14,10 @@ const findMessageById = async (id) => {
 
 const createNewMessage = async (messageOBj) => {
   const newMessage = {
-    id: messageOBj.id,
-    profileImg: messageOBj.profileImg,
-    name: messageOBj.name,
-    createdBy: messageOBj.createdBy,
-    isGroup: messageOBj.isGroup
+    id: uuid.v4(),
+    content: messageOBj.content,
+    participantId: messageOBj.participantId,
+    status: messageOBj.status,
   }
   const data = await Messages.create(newMessage)
   return data 

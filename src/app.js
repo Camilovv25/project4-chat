@@ -40,10 +40,10 @@ app.get('/', (req, res) => {
   })
 });
 
-app.use('/api/v1', conversationsRouter)
-app.use('/api/v1', messagesRouter)
-app.use('/api/v1', participantsRouter)
-app.use('/api/v1', usersRouter)
+app.use('/api/v1/conversations', conversationsRouter)
+app.use('/api/v1/messages', messagesRouter)
+app.use('/api/v1/participants', participantsRouter)
+app.use('/api/v1/users', usersRouter)
 
 app.use('*', (req, res) => {
   responseHandlers.error({
