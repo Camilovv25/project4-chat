@@ -7,7 +7,7 @@ const conversationsRouter = require('./conversations/conversations.router')
 const messagesRouter = require('./messages/messages.router')
 const participantsRouter = require ('./participants/participants.router')
 const usersRouter = require('./users/users.router')
-
+const authRouter = require ('./auth/auth.router')
 app.use(express.json());
 
 db.authenticate()
@@ -44,7 +44,7 @@ app.use('/api/v1/conversations', conversationsRouter)
 app.use('/api/v1/messages', messagesRouter)
 app.use('/api/v1/participants', participantsRouter)
 app.use('/api/v1/users', usersRouter)
-
+app.use('/api/v1/auth', authRouter)
 app.use('*', (req, res) => {
   responseHandlers.error({
     res, 
